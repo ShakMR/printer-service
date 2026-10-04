@@ -14,7 +14,15 @@ npm run build
 npm start
 ```
 
-The default binding is `0.0.0.0:3000`. Open `http://localhost:3000` on the Mac, or replace the host with the Mac's LAN IP (for example `http://192.168.1.20:3000`) on another device. Configure `HOST`, `PORT`, `MAX_UPLOAD_BYTES`, and `TEMP_DIR` in `.env` when needed. `npm run dev` starts the TypeScript source directly.
+The server runs without a configuration file. Its defaults are `HOST=0.0.0.0`, `PORT=3000`, `MAX_UPLOAD_BYTES=10485760`, the system temporary directory, and the default rotating log settings. Open `http://localhost:3000` on the Mac, or replace the host with the Mac's LAN IP (for example `http://192.168.1.20:3000`) on another device. `npm run dev` starts the TypeScript source directly.
+
+All settings can be overridden with command-line options, for example:
+
+```sh
+./macos-lan-print-server --port 8080 --max-upload-bytes 20971520 --log-level debug
+```
+
+Supported options are `--host`, `--port`, `--max-upload-bytes`, `--temp-dir`, `--log-level`, `--log-file`, and `--log-max-bytes`. A `.env` file is optional; for a packaged binary it can be placed beside the executable.
 
 ## Logging
 
@@ -31,7 +39,7 @@ npm install
 npm run package:macos
 ```
 
-For an Apple Silicon release only, use `npm run package:macos-arm64`.
+For an Apple Silicon release only, use `npm run package:macos-arm64`. This creates both the standalone binary and `macos-lan-print-server-arm64.zip`, containing the binary, this README, and `.env.example`.
 
 The output is written to `release/` as one binary for Intel Macs (`macos-x64`) and one for Apple Silicon (`macos-arm64`). The target Mac does not need Node.js, npm, Docker, or `node_modules`. Copy the matching binary to the Mac, make it executable with `chmod +x`, place a `.env` beside it when you need host-specific settings, and run it from any directory. Packaged binaries load that adjacent `.env`; source runs also load the current working directory's `.env`. macOS may require allowing the binary in Privacy & Security; production distribution should use a Developer ID signature and notarization.
 

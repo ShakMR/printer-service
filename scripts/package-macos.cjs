@@ -21,7 +21,14 @@ if (pkg.status !== 0) process.exit(pkg.status ?? 1);
 if (target === 'node22-macos-arm64') {
   const binary = path.join('release', 'macos-lan-print-server-arm64', 'macos-lan-print-server');
   const archive = path.join('release', 'macos-lan-print-server-arm64.zip');
-  const zip = spawnSync('zip', ['-j', '-FS', archive, binary, 'README.md', '.env.example'], { stdio: 'inherit' });
+  const staging = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'lan-print-release-'));
+  const stagedBinary = path.join(staging, 'macos-lan-print-server');
+  fs.copyFileSync(binary, stagedBinary);
+  fs.chmodSync(stagedBinary, 0o755);
+  fs.copyFileSync('packaging/macos/README.md', path.join(staging, 'README.md'));
+  fs.copyFileSync('.env.example', path.join(staging, '.env.example'));
+  const zip = spawnSync('zip', ['-j', '-FS', archive, stagedBinary, path.join(staging, 'README.md'), path.join(staging, '.env.example')], { stdio: 'inherit' });
+  fs.rmSync(staging, { recursive: true, force: true });
   if (zip.status !== 0) process.exit(zip.status ?? 1);
   fs.chmodSync(binary, 0o755);
   console.log(`Created ${archive}`);

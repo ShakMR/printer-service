@@ -1,0 +1,39 @@
+{
+  "name": "macos-lan-print-server",
+  "version": "1.0.0",
+  "private": true,
+  "bin": "dist/server.js",
+  "description": "A small macOS LAN PDF print server.",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/server.ts",
+    "start": "node dist/server.js",
+    "package:macos": "node scripts/package-macos.cjs",
+    "package:macos-arm64": "node scripts/package-macos.cjs node22-macos-arm64",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "multer": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.1",
+    "@types/supertest": "^6.0.2",
+    "@yao-pkg/pkg": "^6.12.0",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "pkg": {
+    "assets": ["public/**/*"]
+  }
+}

@@ -17,9 +17,9 @@ export class PrinterSystemError extends Error {
   }
 }
 
-export function parseLpstatPrinters(output: string): Printer[] {
+export function parseLpstatPrinters(output: string | undefined): Printer[] {
   const printers: Printer[] = [];
-  for (const line of output.split(/\r?\n/)) {
+  for (const line of String(output ?? '').split(/\r?\n/)) {
     const match = /^printer\s+(.+?)\s+(?:is\s+)?(idle|printing|disabled)\b/i.exec(line.trim());
     if (!match) continue;
     const name = match[1].trim();

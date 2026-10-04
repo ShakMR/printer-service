@@ -15,6 +15,6 @@ const execFile = promisify(nodeExecFile);
 export const productionCommandRunner: CommandRunner = {
   async run(command, args) {
     const result = await execFile(command, args, { encoding: 'utf8' });
-    return { stdout: result.stdout, stderr: result.stderr };
+    return { stdout: String(result.stdout ?? ''), stderr: String(result.stderr ?? '') };
   },
 };

@@ -1,7 +1,12 @@
 import os from 'node:os';
 import path from 'node:path';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { LogLevel } from './logger';
+
+dotenv.config();
+if ((process as NodeJS.Process & { pkg?: boolean }).pkg) {
+  dotenv.config({ path: path.join(path.dirname(process.execPath), '.env') });
+}
 
 export interface Config {
   host: string;

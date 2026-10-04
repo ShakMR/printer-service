@@ -33,7 +33,7 @@ npm run package:macos
 
 For an Apple Silicon release only, use `npm run package:macos-arm64`.
 
-The output is written to `release/` as one binary for Intel Macs (`macos-x64`) and one for Apple Silicon (`macos-arm64`). The target Mac does not need Node.js, npm, Docker, or `node_modules`. Copy the matching binary to the Mac, make it executable with `chmod +x`, optionally place a `.env` beside it, and run it. macOS may require allowing the binary in Privacy & Security; production distribution should use a Developer ID signature and notarization.
+The output is written to `release/` as one binary for Intel Macs (`macos-x64`) and one for Apple Silicon (`macos-arm64`). The target Mac does not need Node.js, npm, Docker, or `node_modules`. Copy the matching binary to the Mac, make it executable with `chmod +x`, place a `.env` beside it when you need host-specific settings, and run it from any directory. Packaged binaries load that adjacent `.env`; source runs also load the current working directory's `.env`. macOS may require allowing the binary in Privacy & Security; production distribution should use a Developer ID signature and notarization.
 
 Packaging requires Node.js 22 or newer and npm on the build machine. A single universal Mach-O binary is not produced; distribute the architecture-specific binary that matches the host Mac.
 

@@ -26,4 +26,11 @@ describe('MacosPrinterService', () => {
       ['lp', '-d', 'Office; Laser', '/tmp/a file.pdf'],
     ]);
   });
+
+  it('treats missing command output as empty text', async () => {
+    const runner: CommandRunner = { run: async (command) => command === 'lpstat'
+      ? ({ stdout: undefined as unknown as string, stderr: undefined as unknown as string })
+      : ({ stdout: '', stderr: '' }) };
+    await expect(new MacosPrinterService(runner).listPrinters()).resolves.toEqual([]);
+  });
 });
